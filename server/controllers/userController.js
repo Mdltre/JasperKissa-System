@@ -14,28 +14,16 @@ const pool = mysql.createPool({
 exports.view = (req,res) => {
     
 
+res.render('login', {true: {login: true }});
 
-//Connect to DB
-pool.getConnection((err,connection) => {
-    if(err) throw err; //not connected!
-    console.log('Connected as ID' + " " + connection.threadId)
-    //User the connection
-    connection.query('SELECT * FROM item',(err,rows) => {
-        // When done with the connection, release it
-        connection.release();
+}
 
-        if(!err){
-            res.render('home', {rows});
-        } else{
-            console.log(err);
-        }
-
-        console.log('The data from user table: \n', rows);
-
-
-    });
-});
-};
+// View Items
+exports.home = (req,res) => {
+    
+  res.render('home');
+    };
+    
 
 //View Items POS
 exports.items = (req,res) => {
@@ -389,11 +377,13 @@ exports.viewall = (req,res) => {
         if(err) throw err; //not connected!
         console.log('Connected as ID' + " " + connection.threadId)
         //User the connection
-        connection.query('SELECT item_id,item_name,category.category_id,category_name,description,quantity,price,final_price,stock,type,DATE_FORMAT(datein,"%m-%d-%Y") AS datein,item.emp_id,item.supp_id,item.brand_id,brand_name,item.emp_id,emp_firstname FROM item,brand,category,employee WHERE item_id = ? AND item.category_id = category.category_id AND item.brand_id = brand.brand_id AND item.emp_id = employee.emp_id', [req.params.id],(err,rows) => {
+        connection.query('SELECT stockin_trans_id,stock_entry.item_id,reff_num,new_stock_added,item_name,category.category_id,category_name,description,quantity,price,final_price,stock,type,DATE_FORMAT(stockin_transaction.date_added,"%m-%d-%Y") AS datein,item.emp_id,item.supp_id,item.brand_id,brand_name,emp_firstname,encoded_by FROM item,brand,category,employee,stock_entry,stockin_transaction WHERE item.item_id = ? AND item.category_id = category.category_id AND item.brand_id = brand.brand_id AND stock_entry.item_id = item.item_id AND encoded_by = employee.emp_id AND reff_num = stockin_trans_id ORDER BY stockin_transaction.date_added', [req.params.id],(err,rows) => {
+            connection.query('SELECT item_id,item_name,category.category_id,category_name,description,quantity,price,final_price,stock,type,DATE_FORMAT(item.datein,"%m-%d-%Y") AS datein,item.emp_id,item.supp_id,item.brand_id,brand_name,item.emp_id,emp_firstname FROM item,brand,category,employee WHERE item_id = ? AND item.category_id = category.category_id AND item.brand_id = brand.brand_id AND item.emp_id = employee.emp_id ORDER BY item.datein', [req.params.id],(err,rows2) => {
+
             // When done with the connection, release it
             connection.release();
             if(!err){
-                res.render('view-item', {rows});
+                res.render('view-item', {rows,rows2});
             } else{
                 console.log(err);
             }
@@ -402,6 +392,7 @@ exports.viewall = (req,res) => {
     
     
         });
+    });
     });
     };
 
@@ -998,18 +989,20 @@ exports.get_stockin_transaction = (req,res) => {
             
                 //User the connection
                 connection.query('SELECT item_id, item_name,item.category_id,category_name,brand.brand_id,brand_name,description,quantity,final_price,price,stock,supp_id,emp_id, DATE_FORMAT(datein,"%m-%d-%Y") as datein FROM item,category,brand WHERE category.category_id = item.category_id AND brand.brand_id = item.brand_id AND (item_name LIKE ? OR brand_name LIKE ? OR category_name LIKE ?) Group by item_id  ', ['%' + searchTerm + '%','%' + searchTerm + '%','%' + searchTerm + '%'],(err,rows) => {
+                    connection.query('SELECT stockin_trans_id,supplier, company_name, address FROM stockin_transaction, supplier WHERE stockin_trans_id = (SELECT stockin_trans_id FROM stockin_transaction ORDER BY stockin_trans_id DESC LIMIT 1) AND supplier = supp_id',(err,ref) => {
+
                     // When done with the connection, release it
                     connection.release();
             
                     if(!err){
-                        res.render('PAGE-stock_entry', {rows});
+                        res.render('PAGE-stock_entry', {rows,reference_num:ref});
                        // res.redirect('/StockInEntry');
                     } else{
                         console.log(err);
                     }
             
                     console.log('The data from user table: \n', rows);
-            
+                });
         
                 });
             });
@@ -1019,7 +1012,7 @@ exports.get_stockin_transaction = (req,res) => {
     
 exports.StockinEntryCart = (req,res) => { 
             //Connect to DB
-
+            const{butt} = req.body;   
             pool.getConnection((err,connection) => {
                 if(err) throw err; //not connected!
                 console.log('Connected as ID' + " " + connection.threadId)
@@ -1035,8 +1028,9 @@ exports.StockinEntryCart = (req,res) => {
         
                           
                         }
-                        connection.query('SELECT stock_cart.item_id,item_name,item.brand_id,brand_name,category.category_id,category_name,description,quantity,price,stock_cart.stock,item.emp_id FROM item,stock_cart,category,brand WHERE item.item_id = stock_cart.item_id AND item.category_id = category.category_id  AND item.brand_id = brand.brand_id',(err,rows) => {
+                        connection.query('SELECT stock_cart.item_id,item_name,item.brand_id,brand_name,category.category_id,category_name,description,quantity,price,stock_cart.stock,item.emp_id,new_stock FROM item,stock_cart,category,brand WHERE item.item_id = stock_cart.item_id AND item.category_id = category.category_id  AND item.brand_id = brand.brand_id',(err,rows) => {
                             // When done with the connection, release it
+
                             if(!err){
                               
         ///////////////////////////////NOT SURE BUT IT WORKS
@@ -1068,26 +1062,25 @@ exports.StockinEntryCart = (req,res) => {
                         
                     }
                    
-                    console.log('The data from user table: \n', rows);
+                    console.log('HI The data from user table: \n', rows);
                     //console.log('Hello')
             
             
               
             });
-         
+        });
             });
           //console.log('The data from user table: \n', rowss);
             });
         
-           
-            });
+ 
             
             
             };
 
 exports.add_all_stock_entry = (req,res) => {
-                const{supplier,stock,item_id,employee} = req.body;                
-    
+                const{supplier,stock,item_id,employee,idd} = req.body;                
+                
                 
             pool.getConnection((err,connection) => {
                 if(err) throw err; //not connected!
@@ -1099,13 +1092,16 @@ exports.add_all_stock_entry = (req,res) => {
                     // When done with the connection, release it
                     //connection.release();
                     connection.query('SELECT stockin_trans_id FROM stockin_transaction ORDER BY stockin_trans_id DESC LIMIT 1',(err,ref) => {
-
-                    connection.query('INSERT INTO stock_entry(reff_num,item_id,new_stock_added) SELECT stockin_trans_id, stock_cart.item_id,(stock_cart.stock-item.stock) as new_stock FROM stockin_transaction,stock_cart,item WHERE stockin_trans_id = (SELECT stockin_trans_id FROM stockin_transaction ORDER BY stockin_trans_id DESC LIMIT 1) AND item.item_id = stock_cart.item_id ',[],(err,rows) => {
+                   
+                       
+                     connection.query('INSERT INTO stock_entry(reff_num,item_id,new_stock_added) SELECT stockin_trans_id, stock_cart.item_id,(stock_cart.stock-item.stock) as new_stock FROM stockin_transaction,stock_cart,item WHERE stockin_trans_id = (SELECT stockin_trans_id FROM stockin_transaction ORDER BY stockin_trans_id DESC LIMIT 1) AND item.item_id = stock_cart.item_id ',[],(err,rows) => {
                     connection.query('UPDATE item i, stock_cart s SET i.stock = s.stock  WHERE i.item_id = s.item_id',[item_id, req.params.id],(err,rows) => {
+                        
 
-                               connection.query('DELETE FROM stock_cart',[req.params.id],(err,rows) => {
-    
-    
+                     connection.query('DELETE FROM stock_cart',[req.params.id],(err,rows) => {
+          
+                       
+
                     if(!err){
         
                         pool.getConnection((err,connection) => {
@@ -1114,9 +1110,9 @@ exports.add_all_stock_entry = (req,res) => {
                             //User the connection
                             connection.query('SELECT * FROM stock_cart ',[req.params.id],(err,rows) => {
                                     if(!err){
-                                        res.render('PAGE-stock_entry_cart',{rows,alert2: `Successfully Added`});
+                                        res.render('PAGE-stock_entry_cart',{rows,alert2: `Successfully Added`,modal_message:'HI'});
                                         res.redirect('/StockInTransaction');
-                                      
+
                                         
                                     }
                         
@@ -1135,15 +1131,20 @@ exports.add_all_stock_entry = (req,res) => {
                     }
             
                     console.log('The data from user table: \n', rows);
+          
+                    console.log('idd \n', stock);
+                    
             
                 });
-               });
             });
+
+            });
+              });
+           });
             });
         
-        });
             
-            });
+       
                 }
         
 
@@ -1225,7 +1226,7 @@ exports.get_addstock_entry = (req,res) => {
                 connection.release();
         
                 if(!err){
-                    res.render('add-per-stock-entry', {rows,reference_num:ref,});
+                    res.render('add-per-stock-entry', {rows,reference_num:ref});
                 } else{
                     console.log(err);
                 }
@@ -1236,6 +1237,8 @@ exports.get_addstock_entry = (req,res) => {
             });
         });
     }
+
+
 //Update stock per item
 exports.create_stock_entry = (req,res) => {
         const{supplier,stock,item_id} = req.body;
@@ -1264,8 +1267,9 @@ exports.create_stock_entry = (req,res) => {
                             
                         if(!err){
                             
-                             res.render('add-per-stock-entry',{rows,reference_num:ref, alert2: `Successfully Added`});
-                            
+                             res.render('add-per-stock-entry',{rows,reference_num:ref,alert2: `Successfully Added`});
+                
+
                               
                                 
                             }
@@ -1388,7 +1392,7 @@ exports.findstock_history = (req,res) => {
         let searchTerm = req.body.search;
     
         //User the connection
-        connection.query('SELECT stockin_id,reference_num,s.item_id,s.supplier_id,company_name,s.emp_id,emp_firstname,new_stock,DATE_FORMAT(s.date,"%m-%d-%Y") AS date_stock, item_name,i.category_id,category_name,i.brand_id, brand_name, description, quantity, price,final_price FROM stock_in AS s, item AS i, category AS c, supplier AS supp, brand AS b, employee AS e WHERE s.item_id = i.item_id AND c.category_id = i.category_id AND s.supplier_id = supp.supp_id AND i.brand_id = b.brand_id AND s.emp_id = e.emp_id AND (item_name LIKE ? OR reference_num LIKE ?) ', ['%' + searchTerm + '%','%' + searchTerm + '%'],(err,rows) => {
+        connection.query('SELECT SE.item_id,reff_num, item_name,brand_name,category_name,company_name,price,final_price,new_stock_added,emp_firstname,DATE_FORMAT(ST.date_added,"%m/%d/%Y") as datein, TIME_FORMAT(ST.date_added, "%I:%i:%s %p") as timein FROM stockin_transaction AS ST, stock_entry AS SE, item AS I,supplier AS S, brand AS B, category AS C, employee AS E WHERE stockin_trans_id = reff_num AND SE.item_id = I.item_id AND ST.supplier = S.supp_id AND I.brand_id = B.brand_id AND I.category_id = C.Category_id AND ST.encoded_by = E.emp_id AND (item_name LIKE ? OR reff_num LIKE ? OR SE.item_id LIKE ?) ORDER BY ST.date_added ', ['%' + searchTerm + '%','%' + searchTerm + '%','%' + searchTerm + '%'],(err,rows) => {
             // When done with the connection, release it
             connection.release();
     
@@ -1466,7 +1470,11 @@ exports.StockinHistoryPage = (req,res) => {
         if(err) throw err; //not connected!
         console.log('Connected as ID' + " " + connection.threadId)
         //User the connection
-        connection.query('SELECT stockin_id,reference_num,s.item_id,s.supplier_id,company_name,s.emp_id,emp_firstname,new_stock,DATE_FORMAT(s.date,"%m-%d-%Y") AS date_stock, item_name,i.category_id,category_name,i.brand_id, brand_name, description, quantity, price,final_price FROM stock_in AS s, item AS i, category AS c, supplier AS supp, brand AS b, employee AS e WHERE s.item_id = i.item_id AND c.category_id = i.category_id AND s.supplier_id = supp.supp_id AND i.brand_id = b.brand_id AND s.emp_id = e.emp_id Order by date_stock ',(err,rows) => {
+
+    
+        connection.query('SELECT SE.item_id,reff_num, item_name,brand_name,category_name,company_name,price,final_price,new_stock_added,emp_firstname,DATE_FORMAT(ST.date_added,"%m/%d/%Y") as datein, TIME_FORMAT(ST.date_added, "%I:%i:%s %p") as timein FROM stockin_transaction AS ST, stock_entry AS SE, item AS I,supplier AS S, brand AS B, category AS C, employee AS E WHERE stockin_trans_id = reff_num AND SE.item_id = I.item_id AND ST.supplier = S.supp_id AND I.brand_id = B.brand_id AND I.category_id = C.Category_id AND ST.encoded_by = E.emp_id ORDER BY ST.date_added',[],(err,rows) => {
+
+            
             // When done with the connection, release it
     
             if(!err){
@@ -1476,24 +1484,27 @@ exports.StockinHistoryPage = (req,res) => {
             }
     
             console.log('The data from user table: \n', rows);
-    
-    
+
+
         });
-    });
+    });  
+
     };
 
 
 //Sort items
+/*
 exports.sortStockinHistoryPage_itemid = (req,res) => {
+    
     
     pool.getConnection((err,connection) => {
 
         if(err) throw err; //not connected!
         console.log('Connected as ID' + " " + connection.threadId)
 
-        let orderby_itemname = req.body.itemname;
+        //User the connection
+        connection.query('SELECT SE.item_id,reff_num, item_name,brand_name,category_name,company_name,price,final_price,new_stock_added,emp_firstname,DATE_FORMAT(ST.date_added,"%m/%d/%Y") as datein, TIME_FORMAT(ST.date_added, "%I:%i:%s %p") as timein FROM stockin_transaction AS ST, stock_entry AS SE, item AS I,supplier AS S, brand AS B, category AS C, employee AS E WHERE stockin_trans_id = reff_num AND SE.item_id = I.item_id AND ST.supplier = S.supp_id AND I.brand_id = B.brand_id AND I.category_id = C.Category_id AND ST.encoded_by = E.emp_id ORDER BY SE.item_id', [],(err,rows) => {
 
-        connection.query('SELECT stockin_id,reference_num,s.item_id,s.supplier_id,company_name,s.emp_id,emp_firstname,new_stock,DATE_FORMAT(s.date,"%m-%d-%Y") AS date_stock, item_name,i.category_id,category_name,i.brand_id, brand_name, description, quantity, price,final_price FROM stock_in AS s, item AS i, category AS c, supplier AS supp, brand AS b, employee AS e WHERE s.item_id = i.item_id AND c.category_id = i.category_id AND s.supplier_id = supp.supp_id AND i.brand_id = b.brand_id AND s.emp_id = e.emp_id  Order by item_id ',[], (err,rows) => {
             // When done with the connection, release it
             connection.release();
     
@@ -1504,9 +1515,12 @@ exports.sortStockinHistoryPage_itemid = (req,res) => {
             }
     
             console.log('The data from user table: \n', rows);
-            
-        });
+        
+      
+        });    
     });
+   
+
 }
 exports.sortStockinHistoryPage_itemname = (req,res) => {
     
@@ -1515,9 +1529,9 @@ exports.sortStockinHistoryPage_itemname = (req,res) => {
         if(err) throw err; //not connected!
         console.log('Connected as ID' + " " + connection.threadId)
 
-        let orderby_itemname = req.body.itemname;
-
-        connection.query('SELECT stockin_id,reference_num,s.item_id,s.supplier_id,company_name,s.emp_id,emp_firstname,new_stock,DATE_FORMAT(s.date,"%m-%d-%Y") AS date_stock, item_name,i.category_id,category_name,i.brand_id, brand_name, description, quantity, price,final_price FROM stock_in AS s, item AS i, category AS c, supplier AS supp, brand AS b, employee AS e WHERE s.item_id = i.item_id AND c.category_id = i.category_id AND s.supplier_id = supp.supp_id AND i.brand_id = b.brand_id AND s.emp_id = e.emp_id Order by item_name ',[], (err,rows) => {
+ 
+        //User the connection
+        connection.query('SELECT SE.item_id,reff_num, item_name,brand_name,category_name,company_name,price,final_price,new_stock_added,emp_firstname,DATE_FORMAT(ST.date_added,"%m/%d/%Y") as datein, TIME_FORMAT(ST.date_added, "%I:%i:%s %p") as timein FROM stockin_transaction AS ST, stock_entry AS SE, item AS I,supplier AS S, brand AS B, category AS C, employee AS E WHERE stockin_trans_id = reff_num AND SE.item_id = I.item_id AND ST.supplier = S.supp_id AND I.brand_id = B.brand_id AND I.category_id = C.Category_id AND ST.encoded_by = E.emp_id ORDER BY item_name', [],(err,rows) => {
             // When done with the connection, release it
             connection.release();
     
@@ -1528,7 +1542,7 @@ exports.sortStockinHistoryPage_itemname = (req,res) => {
             }
     
             console.log('The data from user table: \n', rows);
-            
+           
         });
     });
 }
@@ -1542,8 +1556,9 @@ exports.sortStockinHistoryPage_category = (req,res) => {
 
         let orderby_itemname = req.body.itemname;
 
-        connection.query('SELECT stockin_id,reference_num,s.item_id,s.supplier_id,company_name,s.emp_id,emp_firstname,new_stock,DATE_FORMAT(s.date,"%m-%d-%Y") AS date_stock, item_name,i.category_id,category_name,i.brand_id, brand_name, description, quantity, price,final_price FROM stock_in AS s, item AS i, category AS c, supplier AS supp, brand AS b, employee AS e WHERE s.item_id = i.item_id AND c.category_id = i.category_id AND s.supplier_id = supp.supp_id AND i.brand_id = b.brand_id AND s.emp_id = e.emp_id  Order by category_name ',[], (err,rows) => {
-            // When done with the connection, release it
+        //User the connection
+        connection.query('SELECT SE.item_id,reff_num, item_name,brand_name,category_name,company_name,price,final_price,new_stock_added,emp_firstname,DATE_FORMAT(ST.date_added,"%m/%d/%Y") as datein, TIME_FORMAT(ST.date_added, "%I:%i:%s %p") as timein FROM stockin_transaction AS ST, stock_entry AS SE, item AS I,supplier AS S, brand AS B, category AS C, employee AS E WHERE stockin_trans_id = reff_num AND SE.item_id = I.item_id AND ST.supplier = S.supp_id AND I.brand_id = B.brand_id AND I.category_id = C.Category_id AND ST.encoded_by = E.emp_id ORDER BY category_name', [],(err,rows) => {
+           // When done with the connection, release it
             connection.release();
     
             if(!err){
@@ -1566,8 +1581,9 @@ exports.sortStockinHistoryPage_supplier = (req,res) => {
 
         let orderby_itemname = req.body.itemname;
 
-        connection.query('SELECT stockin_id,reference_num,s.item_id,s.supplier_id,company_name,s.emp_id,emp_firstname,new_stock,DATE_FORMAT(s.date,"%m-%d-%Y") AS date_stock, item_name,i.category_id,category_name,i.brand_id, brand_name, description, quantity, price,final_price FROM stock_in AS s, item AS i, category AS c, supplier AS supp, brand AS b, employee AS e WHERE s.item_id = i.item_id AND c.category_id = i.category_id AND s.supplier_id = supp.supp_id AND i.brand_id = b.brand_id AND s.emp_id = e.emp_id  Order by company_name',[], (err,rows) => {
-            // When done with the connection, release it
+        //User the connection
+        connection.query('SELECT SE.item_id,reff_num, item_name,brand_name,category_name,company_name,price,final_price,new_stock_added,emp_firstname,DATE_FORMAT(ST.date_added,"%m/%d/%Y") as datein, TIME_FORMAT(ST.date_added, "%I:%i:%s %p") as timein FROM stockin_transaction AS ST, stock_entry AS SE, item AS I,supplier AS S, brand AS B, category AS C, employee AS E WHERE stockin_trans_id = reff_num AND SE.item_id = I.item_id AND ST.supplier = S.supp_id AND I.brand_id = B.brand_id AND I.category_id = C.Category_id AND ST.encoded_by = E.emp_id ORDER BY company_name', [],(err,rows) => {
+                // When done with the connection, release it
             connection.release();
     
             if(!err){
@@ -1590,7 +1606,7 @@ exports.sortStockinHistoryPage_date = (req,res) => {
 
         let orderby_itemname = req.body.itemname;
 
-        connection.query('SELECT stockin_id,reference_num,s.item_id,s.supplier_id,company_name,s.emp_id,emp_firstname,new_stock,DATE_FORMAT(s.date,"%m-%d-%Y") AS date_stock, item_name,i.category_id,category_name,i.brand_id, brand_name, description, quantity, price,final_price FROM stock_in AS s, item AS i, category AS c, supplier AS supp, brand AS b, employee AS e WHERE s.item_id = i.item_id AND c.category_id = i.category_id AND s.supplier_id = supp.supp_id AND i.brand_id = b.brand_id AND s.emp_id = e.emp_id  Order by date_stock ',[], (err,rows) => {
+        connection.query('SELECT SE.item_id,reff_num, item_name,brand_name,category_name,company_name,price,final_price,new_stock_added,emp_firstname,DATE_FORMAT(ST.date_added,"%m/%d/%Y") as datein, TIME_FORMAT(ST.date_added, "%I:%i:%s %p") as timein FROM stockin_transaction AS ST, stock_entry AS SE, item AS I,supplier AS S, brand AS B, category AS C, employee AS E WHERE stockin_trans_id = reff_num AND SE.item_id = I.item_id AND ST.supplier = S.supp_id AND I.brand_id = B.brand_id AND I.category_id = C.Category_id AND ST.encoded_by = E.emp_id Order by ST.date_added ORDER BY SE.item_id ',[], (err,rows) => {
             // When done with the connection, release it
             connection.release();
     
@@ -1606,6 +1622,36 @@ exports.sortStockinHistoryPage_date = (req,res) => {
         });
     });
 }
+*/
+exports.FindDate = (req,res) => {
+
+    pool.getConnection((err,connection) => {
+        if(err) throw err; //not connected!
+        console.log('Connected as ID' + " " + connection.threadId)
+    
+        let From_searchTerm = req.body.From_SortDate;
+        let To_searchTerm = req.body.To_SortDate;
+    
+        //User the connection
+        connection.query('SELECT SE.item_id,reff_num, item_name,brand_name,category_name,company_name,price,final_price,new_stock_added,emp_firstname,DATE_FORMAT(ST.date_added,"%m/%d/%Y") as datein, TIME_FORMAT(ST.date_added, "%I:%i:%s %p") as timein FROM stockin_transaction AS ST, stock_entry AS SE, item AS I,supplier AS S, brand AS B, category AS C, employee AS E WHERE stockin_trans_id = reff_num AND SE.item_id = I.item_id AND ST.supplier = S.supp_id AND I.brand_id = B.brand_id AND I.category_id = C.Category_id AND ST.encoded_by = E.emp_id AND  CAST(ST.date_added AS DATE) between ? and ? ORDER BY ST.date_added ', [From_searchTerm,To_searchTerm],(err,rows) => {
+            // When done with the connection, release it
+            connection.release();
+    
+            if(!err){
+                res.render('StockinHistorypage', {rows});
+            } else{
+                console.log(err);
+            }
+    
+            //console.log('The data from user table: \n', rows);
+            console.log("YES"+From_searchTerm);
+            console.log("YES"+To_searchTerm);
+
+        });
+    });
+    }
+   
+
 //INVENTORY
 /*
 //View Items in Inventory

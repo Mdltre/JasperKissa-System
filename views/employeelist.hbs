@@ -1,0 +1,26 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Employee ID</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">First Name</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Status</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each rows}}
+    <tr>
+      <th scope="row">{{this.emp_id}}</th>
+      <td>{{this.emp_lastname}}</td>
+      <td>{{this.emp_firstname}}</td>
+      <td>{{this.phone}}</td>
+      <td>{{this.status}}</td>
+      <td>
+          <a href="#" type="button" class="btn btn-dark btn-small"><i class="bi bi-eye"></i>View</a>
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>

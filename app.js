@@ -5,6 +5,7 @@ const mysql = require('mysql');
 var hbs = require('hbs');
 var path = require('path');
 var helpers = require('./server/components/hbshelpers');
+const session = require('express-session');
 
 require('dotenv').config();
 
@@ -34,6 +35,9 @@ app.use(express.static('public'));
 app.engine('hbs',exphbs.engine( {extname: 'hbs'} ));
 app.set('view engine','hbs');
 
+app.use(express.static(path.join(__dirname, 'static')));
+
+
 //Connection Pool
 
 const pool = mysql.createPool({
@@ -50,8 +54,97 @@ pool.getConnection((err,connection) => {
     console.log('Connected as ID' + " " + connection.threadId)
 });
 
+
 const routes = require('./server/routes/user');
 app.use('/', routes);
+
+var sess;
+const employeeroutes = require('./server/routes/employee');
+app.use('/', employeeroutes);
+const adminroutes = require('./server/routes/admin');
+app.use('/', adminroutes);
+const attendanceroutes = require('./server/routes/attendance');
+app.use('/', attendanceroutes);
+
+
+
+const connection = mysql.createConnection({
+	host     : 'localhost',
+	user     : 'root',
+	password : 'password',
+	database : 'inventorymanagement'
+});
+
+
+app.use(session({
+	secret: 'secret',
+	resave: true,
+	saveUninitialized: true
+}));
+
+app.use(express.static(path.join(__dirname, 'static')));
+
+
+app.get('/attendance', function(request, response){
+	response.render("attendancerecord");
+});
+
+// http://localhost:3000/auth
+app.post('/auth', function(request, response) {
+	// Capture the input fields
+	let username = request.body.username;
+	let password = request.body.password;
+	// Ensure the input fields exists and are not empty
+	if (username && password) {
+		// Execute SQL query that'll select the account from the database based on the specified username and password
+		connection.query('SELECT * FROM employee WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
+			// If there is an issue with the query, output the error
+			// If the account exists
+			if (results.length > 0) {
+				// Authenticate the user
+				request.session.loggedin = true;
+				request.session.username = username;
+
+				connection.connect(function(err) {
+					console.log("Connected!");
+					var sql = "SELECT * FROM employee WHERE username = '"+username+"' AND password = '"+password+"' AND position = 'Admin'" // setup your query
+					connection.query(sql, function (err, result) {  // pass your query
+					  console.log("Result: " + result);
+					  if (result != "") {
+						// true logic
+
+						response.redirect('/adminhome');
+						console.log(request.session);
+						app.locals.sess= request.session.loggedin;
+					  }
+					  else
+					  {
+						// false logic
+						response.redirect('/employee/home');
+						app.locals.sess= request.session.loggedin;
+					  }
+					});
+				  });
+
+				// Redirect to home page
+			} else {
+				response.send('Incorrect Username and/or Password!');
+			}			
+		});
+	} else {
+		response.send('Please enter Username and Password!');
+		response.end();
+	}
+});
+
+app.get('/logout',function(req, res){
+	req.session.destroy(function(){
+		app.locals.sess= false;
+	  res.redirect('/');
+	  console.log("out.");
+	});
+  }); 
+
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 

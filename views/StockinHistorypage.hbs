@@ -3,22 +3,33 @@
    <div class="d-flex mb-3"> 
 
     <div class="p-2">
+      <div class="mb-3">
      <form class="d-flex" role="search" method="POST" action="/StockinHistoryPage" novalidate>
-       <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+       <input class="form-control me-2 " type="search" placeholder="Search by Item/Reference# " aria-label="Search" name="search" id="search">
           <button class="btn btn-outline-dark" type="submit">Search</button>
-          </form>     
-        </div> 
-
+           </form>
+          </div>    
+  <p></p>
+    <div class="mb-3">
+     <form class="d-flex" role="sortdate" method="POST" action="/StockinHistoryPage/FindDate" novalidate>
+         <input class="form-control me-2" type="date" placeholder="Sort Date" aria-label="SortDate" name="From_SortDate">
+          <input class="form-control me-2" type="date" placeholder="Sort Date" aria-label="SortDate" name="To_SortDate">
+    
+          <button class="btn btn-outline-dark" type="submit">Search Date</button>
+          </form> 
+          </div>     
+        </div>
+{{!-- {{ 
         <div class="p-2">
          <div class="btn-group">
         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
          Sort
         </button>
           <ul class="dropdown-menu">
-             <form  method="POST" action="/StockinHistoryPage/itemid" novalidate>
-            <li><button class="dropdown-item" href="/StockinHistoryPage/itemid" type="sort">Item ID</button></li>
+            <form  method="POST" action="/StockinHistoryPage/itemid" novalidate>
+            <li><button class="dropdown-item" href="/StockinHistoryPage/itemid" type="sort" name="item_id_sort">Item ID</button></li>
             </form>
-           <form  method="POST" action="/StockinHistoryPage/itemname" novalidate>
+            <form  method="POST" action="/StockinHistoryPage/itemname" novalidate>
             <li><button class="dropdown-item" href="/StockinHistoryPage/itemname" type="sort">Item Name</button></li>
             </form>
             <form  method="POST" action="/StockinHistoryPage/category" novalidate>
@@ -33,9 +44,9 @@
             
           </ul>
          
-        </div>  
         </div>
-        
+    </div>
+   }} --}}
       </div>
  
 
@@ -43,8 +54,9 @@
 <table class="table table-bordered table-hover">
   <thead class="thead-dark">
     <tr>
-      <th scope="col">Item ID</th>
+      
       <th scope="col">Reference #</th>
+      <th scope="col">Item ID</th>
       <th scope="col">Item Name</th>
       <th scope="col">Brand</th>
       <th scope="col">Item Category</th>
@@ -53,23 +65,23 @@
       <th scope="col">Price</th>
       <th scope="col">Stock Added</th>
       <th scope="col">Encoded By</th>
-      <th scope="col">Date</th>
+      <th scope="col">Date & Time Added</th>
     </tr>
   </thead>
   <tbody>
     {{#each rows}}
     <tr>
-      <th scope="row">{{this.item_id}}</th>
-      <td>{{this.reference_num}}</td>
+      <th scope="row">{{this.reff_num}}</th>
+      <td>{{this.item_id}}</td>
       <td>{{this.item_name}}</td>
       <td>{{this.brand_name}}</td>
       <td>{{this.category_name}}</td>
       <td>{{this.company_name}}</td>
       <td>{{this.price}}</td>
       <td>{{this.final_price}}</td>
-      <td>{{this.new_stock}}</td>
+      <td>{{this.new_stock_added}}</td>
       <td>{{this.emp_firstname}}</td>
-      <td>{{this.date_stock}}</td>
+      <td>{{this.datein}}</td>
 
     </tr>
   {{/each}}

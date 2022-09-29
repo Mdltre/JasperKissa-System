@@ -6,16 +6,13 @@
 </nav>
 
 <div class="view-user p-5">
-
-
-{{#each rows}}
-
+{{#each rows2}}
+<div class="bg-secondary p-2 text-dark bg-opacity-10 border border-2 rounded"> 
 <div class="row mb-5">
   <div class="col text-center">
-    <h3>{{this.item_name}} {{this.item_category}}</h3>
+    <h3>Item Details</h3>
   </div>
 </div>
-
  <div class="row">
   <div class="col">
     <table class="table">
@@ -28,10 +25,10 @@
           <th scope="col">Quantity</th>
           <th scope="col">Cost</th>
           <th scope="col">Price</th>
-          <th scope="col">Stock</th>
+          <th scope="col">Total Stocks</th>
           <th scope="col">Type</th>
           <th scope="col">Encoded by</th>
-          <th scope="col" >Date</th>
+          <th scope="col" >Date Added</th>
           
         </tr>
       </thead>
@@ -65,8 +62,49 @@
     {{this.description}}
     </div>
   </div>
-<div class="row mb-5"></div>
+</div>
+
+<p></p>
 
 {{/each}}
+
+
+<div class="bg-secondary p-2 text-dark bg-opacity-10 border border-2 rounded"> 
+<div class="row mb-5">
+  <div class="col text-center">
+    <h3>Item Stock-In History</h3>
+  </div>
+</div>
+
+ <div class="row">
+  <div class="col">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Reference#</th>
+          <th scope="col">Stock Added</th>
+          <th scope="col">Encoded by</th>
+          <th scope="col" >Date of Stock-In</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        {{#each rows}}
+        <tr>
+          <th scope="row">{{this.reff_num}}</th>
+          <td>{{this.new_stock_added}}</td>
+          <td>{{this.emp_firstname}}</td>
+           <td>{{this.datein}}</td>
+
+        </tr>
+      </tbody>
+      {{/each}}
+    </table>
+  </div>
+ </div>
+</div>
+
+
+
 
 </div>

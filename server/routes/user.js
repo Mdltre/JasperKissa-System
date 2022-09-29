@@ -3,8 +3,12 @@ const router = express.Router();
 const userController = require('../controllers/userController');
 const cors = require('cors');
 
-//create, find, update, delete
+
+
+//LOGIN PAGE
 router.get('/', userController.view);
+//create, find, update, delete
+router.get('/home', userController.home);
 router.post('/', userController.find);
 router.get('/additem', userController.form);
 router.post('/additem', userController.create);
@@ -71,12 +75,12 @@ router.get('/StockinHistoryPage', userController.StockinHistoryPage);
 router.post('/StockinHistoryPage', userController.findstock_history);
 
 //SORT
-router.post('/StockinHistoryPage/itemid', userController.sortStockinHistoryPage_itemid);
+/*router.post('/StockinHistoryPage/itemid', userController.sortStockinHistoryPage_itemid);
 router.post('/StockinHistoryPage/itemname', userController.sortStockinHistoryPage_itemname);
 router.post('/StockinHistoryPage/category', userController.sortStockinHistoryPage_category);
 router.post('/StockinHistoryPage/supplier', userController.sortStockinHistoryPage_supplier);
-router.post('/StockinHistoryPage/date', userController.sortStockinHistoryPage_date);
-
+router.post('/StockinHistoryPage/date', userController.sortStockinHistoryPage_date);*/
+router.post('/StockinHistoryPage/FindDate', userController.FindDate);
 //INVENTORY
 //router.get('/prodinvitem', userController.PInv);
 //router.get('/viewiteminInv/:id', userController.viewiteminv);

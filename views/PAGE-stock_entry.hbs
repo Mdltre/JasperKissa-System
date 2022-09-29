@@ -4,8 +4,9 @@
 <div class="row">
   <div class="bg-secondary p-2 text-dark bg-opacity-10 border border-2 rounded"> 
  {{#each reference_num}}    
-  <div class="fs-6">Reference# {{this.stockin_trans_id}}</div>
-  <div class="fs-6">Company Name: {{this.company_name}}</div>
+  <div class="fs-6"><i class="bi bi-info-square-fill"> Reference# {{this.stockin_trans_id}}
+   | {{this.company_name}}
+   | {{this.address}}</i></div>
 {{/each}}
 </div>
  
@@ -25,11 +26,11 @@
 
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-link" href="/StockinEntryCart">Stock Entry</a>
+    <a class="nav-link active" aria-current="page" href="#">Product List</a>
   </li>
  
   <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="#">Product List</a>
+    <a class="nav-link" href="/StockinEntryCart">Stock Entry</a>
   </li>
 
 </ul>
@@ -75,10 +76,11 @@
       <td>{{this.quantity}}</td>
       <td>{{this.price}}</td>
       <td>{{this.stock}}</td>
-   
+
+
+
       <td class="text-end">
-        <a href="/viewstock/{{this.item_id}}" type="button" class="btn btn-light btn-small"><i class="bi bi-eye"></i> View</a>
-        <a href="/StockInEntry/{{this.item_id}}" type="button"  class="btn btn-secondary btn-small"><i class="bi bi-plus-lg"></i> Add</a>
+        <a href="/StockInEntry/{{this.item_id}}" type="button"  class="btn btn-secondary btn-small"><i class="bi bi-plus-lg"></i> </a>
 
      
       </td>
