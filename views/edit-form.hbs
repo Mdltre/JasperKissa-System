@@ -1,0 +1,102 @@
+ <div class="col-6">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.item_code}}" placeholder="Item Code" name="item_code">
+            <label for="floatingInput">Item Code</label>
+        </div>
+    </div>
+
+    <div class="col-6">
+    <div class="form-floating">
+      <select class="form-select" id="floatingSelectGrid" value="{{this.category}}" name="category">
+        <option selected>Item Category</option>
+        <option value="Laptop">Laptop</option>
+        <option value="Keyboard">Keyboard</option>
+        <option value="Mouse">Mouse</option>
+        <option value="CCTV Camera">CCTV Camera</option>
+        <option value="DVR">DVR</option>
+        <option value="Network Devices">Network Devices</option>
+        <option value="Printer">Printer</option>
+        <option value="Laptop Parts">Laptop Parts</option>
+        <option value="Computer Parts">Computer Parts</option>
+        <option value="Others">Others</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="col-12">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.item_name}}" placeholder="Item Name" name="item_name">
+            <label for="floatingInput">Item Name</label>
+        </div>
+    </div>
+
+
+  <div class="col-12">
+        <div class="form-floating mb-3">
+            <textarea class="form-control" name="description" placeholder= "Description of the Product" id="description" style="height:200px">
+                {{this.description}}
+            </textarea>
+            <label for="description">Description</label>
+        </div>
+    </div>
+
+    <div class="col-6">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.quantity}}" placeholder="Quantity" name="quantity">
+            <label for="floatingInput">Quantity</label>
+        </div>
+    </div>
+
+    <div class="col-6">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.stock}}" placeholder="Stock" name="stock">
+            <label for="floatingInput">Stock</label>
+        </div>
+    </div>
+
+     <div class="col-6">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.price}}" placeholder="Price" name="price">
+            <label for="floatingInput">Price</label>
+        </div>
+    </div>
+
+     <div class="col-6">
+        <div class="form-floating mb-3">
+            <input type="date" class="form-control" id="floatingInput" value="{{this.date}}" placeholder="Date" name="date">
+            <label for="floatingInput">Date</label>
+        </div>
+    </div>
+
+     <div class="col-6">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.markup}}" placeholder="Markup" name="markup">
+            <label for="floatingInput">Mark-Up</label>
+        </div>
+    </div>
+
+    <div class="col-6">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.employee}}" placeholder="Employee" name="employee">
+            <label for="floatingInput">Employee</label>
+        </div>
+    </div>
+
+    <div class="col-6">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.invoice}}" placeholder="Invoice" name="invoice">
+            <label for="floatingInput">Invoice</label>
+        </div>
+    </div>
+
+    <div class="col-6">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.supplier}}" placeholder="Suppplier" name="supplier">
+            <label for="floatingInput">Supplier</label>
+        </div>
+    </div>
+      
+   
+    <div class="col-12 d-grid">
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </div>

@@ -1,0 +1,51 @@
+<div class="p-2"><h2>Supplier</h2></div>
+ <div class="d-flex justify-content-between">
+    <div class="p-2">
+     <form class="d-flex" role="search" method="POST" action="/FindSupplier" novalidate>
+       <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+          <button class="btn btn-outline-dark" type="submit">Search</button>
+          </form> 
+          </div> 
+    <div class="p-2">
+          <a href="/AddSupplier" type="button" class="btn btn-primary align-self-center">Add Supplier</a>
+    </div>      
+
+          </div>
+          
+          
+
+
+
+<table class="table table-bordered table-hover">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Supplier ID</th>
+      <th scope="col">Company Name</th>
+      <th scope="col">Contact Person</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Address</th>
+      <th scope="col">Date</th>
+      <th scope="col">Status</th>
+      <th scope="col" class="text-end">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each rows}}
+    <tr>
+      <th scope="row">{{this.supp_id}}</th>
+      <td>{{this.company_name}}</td>
+      <td>{{this.contact_person}}</td>
+      <td>{{this.phone}}</td>
+      <td>{{this.address}}</td>
+      <td>{{this.date}}</td>
+      <td>{{this.status}}</td>
+      <td class="text-end">
+        <a href="/ViewSupplier/{{this.supp_id}}" type="button" class="btn btn-light btn small"><i class="bi bi-eye"></i>View</a>
+        <a href="/EditSupplier/{{this.supp_id}}" type="button" class="btn btn-light btn small"><i class="bi bi-pencil"></i>Edit</a>
+
+      </td>
+    </tr>
+  {{/each}}
+
+  </tbody>
+</table> 

@@ -1,0 +1,100 @@
+
+
+<div class="bg-secondary p-2 text-dark bg-opacity-10 border border-2 rounded"> 
+  <p class="text-start fs-6 fw-bold">Item</p>
+      <div class=" mb-3"></div>
+<div class="col-12">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.item_name}}" placeholder="Item Name" name="item_name">
+            <label for="floatingInput">Item Name</label>
+        </div>
+    </div>
+
+<div class="col-12">
+    <div class="form-floating">
+      <select class="form-select" id="floatingSelectGrid" value="{{this.category}}" name="category" >
+        <option selected>Category</option>
+            {{#each this.cat_list}}
+                 <option value="{{this.category_id}}"> {{this.category_name}}</option>
+            {{/each}}      
+             
+      </select>
+    </div>
+     </div>
+
+     <p></p>
+
+    <div class="col-12">
+    <div class="form-floating">
+      <select class="form-select" id="floatingSelectGrid" value="{{this.brand}}" name="brand" >
+        <option selected>Brand</option>
+            {{#each this.brand_list}}
+                 <option value="{{this.brand_id}}"> {{this.brand_name}}</option>
+            {{/each}}      
+             
+      </select>
+    </div>
+     </div>
+     <p></p>
+
+     
+     <p></p>
+
+
+<div class="col-12">
+    <div class="form-floating mb-3">
+  <textarea class="form-control" name="description" placeholder= "Description of the Product" id="description" style="height:200px">{{this.description}}</textarea>
+  <label for="description">Description</label>
+</div>
+</div>
+</div>
+
+
+
+<div class="bg-secondary p-2 text-dark bg-opacity-10 border border-2 rounded"> 
+  <p class="text-start fs-6 fw-bold">Pricing</p>
+     <div class="col-3">
+        <div class=" mb-3">
+          <label for="floatingInput" > <p class="text-muted fst-italic">Cost per Item</p></label>
+            <input type="text" class="form-control" id="floatingInput" value="{{this.price}}" placeholder="₱" name="price">
+            
+        </div>
+    </div>flexRadioDefault
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="flexRadioDefault" id="SmallItems" value="Small Items" checked>
+      <label class="form-check-label" for="SmallItems">
+        Small Items
+      </label>
+  </div>
+
+  <div class="form-check">
+      <input class="form-check-input" type="radio" name="flexRadioDefault" id="BigItems" value="Big Items">
+      <label class="form-check-label" for="BigItems">
+        Big Items
+      </label>
+  </div>
+</div>
+
+
+<div class="bg-secondary p-2 text-dark bg-opacity-10 border border-2 rounded"> 
+
+      <p></p>
+
+    <div class="col-6">
+    <div class="form-floating">
+      <select class="form-select" id="floatingSelectGrid" value="{{this.employee}}" name="employee" >
+        <option selected>Encoded By</option>
+            {{#each this.admin_list}}
+                 <option value="{{this.emp_id}}"> {{this.emp_firstname}}</option>
+            {{/each}}      
+             
+      </select>
+    </div>
+     </div>
+     
+</div>
+   
+    <div class="col-12 d-grid">
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </div>
+    

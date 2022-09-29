@@ -1,0 +1,104 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/stockentry">Back</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Stock In Item</li>
+  </ol>
+</nav>
+
+{{#if alert}}
+<div class="alert alert-success alert-dismissible fade show" role="alert" ng-show="show_alert">
+  {{alert}}   
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+</div>
+
+{{/if}}
+
+{{#each rows}}
+<form class="row g-3 needs-validation" method="POST" action="/AddNewStock/{{this.item_id}}" novalidate>
+<div class="col-12">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.item_id}}" placeholder="Item ID" name="item_id" readonly>
+            <label for="floatingInput">Item ID</label>
+        </div> 
+    </div>
+
+  <div class="col-12">
+        <div class="form-floating mb-3">            <input type="text" class="form-control" id="floatingInput" value="{{this.item_name}}" placeholder="Item Name" name="item_name" readonly>
+            <label for="floatingInput">Item Name</label>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.category}}" placeholder="Category" name="category" readonly>
+            <label for="floatingInput">Category</label>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.supplier}}" placeholder="Supplier" name="supplier" readonly>
+            <label for="floatingInput">Supplier</label>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.quantity}}" placeholder="Quantity" name="quantity" readonly>
+            <label for="floatingInput">Quantity</label>
+        </div>
+    </div>
+
+     <div class="col-6">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.price}}" placeholder="Price" name="price" readonly>
+            <label for="floatingInput">Price</label>
+        </div>
+    </div>
+
+
+<div class="d-flex justify-content-start">
+    <div class="p-2">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.stock}}" placeholder="Stock" name="stock">
+            <label for="floatingInput"> Add Stock</label>
+            </div>
+    </div>
+    
+    {{/each}}
+
+
+<div class="p-2">
+    <div class="form-floating">
+      <select class="form-select" id="floatingSelectGrid" value="{{this.employee}}" name="employee" readonly>
+        <option selected>Encoded By</option>
+        {{#each rows3}}
+                 <option value={{this.emp_firstname}}> {{this.emp_firstname}}</option>
+        {{/each}}
+             
+      </select>
+    </div>
+     </div>
+     </div>
+     
+{{#each rows}}
+<div class="col-12">
+        <div class="form-floating mb-3">
+            <textarea class="form-control" name="description" placeholder= "Description of the Product" id="description" style="height:200px" readonly>
+                {{this.descrption}}
+            </textarea>
+            <label for="description">Description</label>
+        </div>
+    </div>
+  
+    <div class="d-flex justify-content-start">
+        <div class="p-2">
+            <div class="col-12">
+        <button class="btn btn-primary" type="submit">Submit</button>
+        </div>
+        </div>
+    </div>
+    
+{{/each}}
+
+
+</form>
+

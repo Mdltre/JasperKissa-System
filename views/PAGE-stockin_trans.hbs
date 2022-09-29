@@ -1,0 +1,56 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/invitem">Back</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Add New Stock</li>
+  </ol>
+</nav>
+
+{{#if alert}}
+<div class="alert alert-success alert-dismissible fade show" role="alert" ng-show="show_alert">
+  {{alert}}   
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+</div>
+
+{{/if}}
+
+<form class="row g-3 needs-validation" method="POST" action="/StockInTransaction" novalidate>
+
+<div class="bg-secondary p-2 text-dark bg-opacity-10 border border-2 rounded"> 
+
+      <p></p>
+
+    <div class="col-6">
+    <div class="form-floating">
+      <select class="form-select" id="floatingSelectGrid" value="{{this.supplier}}" name="supplier" >
+        <option selected>Supplier</option>
+            {{#each this.supplier_list}}
+                 <option value="{{this.supp_id}}"> {{this.company_name}}</option>
+                 {{this.supp_id}}
+            {{/each}}      
+             
+      </select>
+    </div>
+     </div>
+
+      <p></p>
+
+    <div class="col-6">
+    <div class="form-floating">
+      <select class="form-select" id="floatingSelectGrid" value="{{this.encoded_by}}" name="encoded_by" >
+        <option selected>Encoded By</option>
+            {{#each this.admin_list}}
+                 <option value="{{this.emp_id}}"> {{this.emp_firstname}}</option>
+            {{/each}}      
+             
+      </select>
+    </div>
+     </div>
+ <p></p>
+     
+</div>
+   
+    <div class="col-12 d-grid">
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </div>
+    </form>

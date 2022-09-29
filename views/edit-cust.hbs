@@ -1,0 +1,43 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/customerlist">Customer</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Edit Customer</li>
+  </ol>
+</nav>
+
+{{#if alert}}
+<div class="alert alert-success alert-dismissible fade show" role="alert" ng-show="show_alert">
+  {{alert}}   
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+</div>
+
+{{/if}}
+
+{{#each rows}}
+<form class="row g-3 needs-validation" method="POST" action="/editcust/{{this.cust_id}}" novalidate>
+
+   <div class="col-6">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.cust_first_name}}" placeholder="First Name" name="custfirst_name">
+            <label for="floatingInput">First Name</label>
+        </div>
+    </div>
+
+    <div class="col-6">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.cust_last_name}}" placeholder="Last Name" name="custlast_name">
+            <label for="floatingInput">Last Name</label>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.phone_num}}" placeholder="Phone Number" name="phonenum">
+            <label for="floatingInput">Phone Number</label>
+        </div>
+    </div>
+    <div class="col-12 d-grid">
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </div>
+{{/each}}
+</form>

@@ -1,0 +1,126 @@
+
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/stockentry">Back</a></li>
+    <li class="breadcrumb-item active" aria-current="page">View Item</li>
+  </ol>
+</nav>
+
+
+{{#if alert2}}
+<div class="alert alert-success alert-dismissible fade show" role="alert" ng-show="show_alert">
+  {{alert2}}   
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+</div>
+
+{{/if}}
+
+
+<div class="view-user p-5">
+{{#each rows}}
+  <form class="row g-3 needs-validation" method="POST" action="/StockinCartPage" novalidate>
+<div class="row mb-5">
+  <div class="col text-center">
+    <h3>{{this.item_name}} {{this.item_category}}</h3>
+  </div>
+ <div class="row">
+  <div class="col">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Item ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Brand</th>
+          <th scope="col">Category</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Cost</th>
+          <th scope="col">Stock</th>
+
+          
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">{{this.item_id}}</th>
+          <td>{{this.item_name}}</td>
+          <td>{{this.brand_name}}</td>
+          <td>{{this.category_name}}</td>
+          <td>{{this.quantity}}</td>
+          <td>{{this.price}}</td>
+          <td>{{this.stock}}</td>
+
+          <td class="text-end">
+          <a  href="/StockinCartPage/{{this.item_id}}" class="btn btn-secondary btn small"><i class="bi bi-plus-lg"></i> Add Stock</a>
+          <a href="/StockinCartPage/delete/{{this.item_id}}"  type="button"  class="btn btn-danger btn small" id = "dbtn"><i class="bi bi-trash-fill"></i>Delete</a>
+          </td>
+         
+        </tr>
+      </tbody>
+    </table>
+  </div>
+ </div>
+
+<div class="row">
+  <div class="col">
+    <b>Description</b>
+    </div>
+  </div>
+<div class="row">
+  <div class="col">
+    {{this.description}}
+    </div>
+  </div>
+
+{{/each}}
+
+
+  <div class="d-flex">
+    <div class="p-2 flex-fill">
+    <div class="form-floating">
+      <select class="form-select" id="floatingSelectGrid" value="{{this.supplier}}" name="supplier" >
+        <option selected>Supplier</option>
+            {{#each this.supplier_list}}
+                 <option value="{{this.supp_id}}"> {{this.company_name}}</option>
+            {{/each}}      
+             
+      </select>
+    </div>
+     </div>
+
+       <div class="p-2 flex-fill">
+        <div class="form-floating">
+          <select class="form-select" id="floatingSelectGrid" value="{{this.employee}}" name="employee" >
+            <option selected>Encoded By</option>
+            {{#each this.admin_list}}
+                    <option value={{this.emp_id}}> {{this.emp_firstname}}</option>
+          
+            {{/each}}
+                
+          </select>
+        </div>
+        </div>
+
+  </div>
+ 
+   <div class="d-grid gap-2">
+      <button class="btn btn-primary" type="submit" >Submit</button>
+      </div> 
+ 
+     
+
+</form>
+<script>
+
+ function disableB() {
+  // Select the element with id "theButton" and disable it
+  document.getElementById("floatingInput").disabled = true;
+
+}       
+
+</script>
+
+
+
+</div>

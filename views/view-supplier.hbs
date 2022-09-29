@@ -1,0 +1,62 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/SupplierPage">Back</a></li>
+    <li class="breadcrumb-item active" aria-current="page">View Employee</li>
+  </ol>
+</nav>
+
+<div class="view-user p-5">
+
+{{#each rows}}
+<div class="row mb-5">
+  <div class="col text-center">
+    <h3>#{{this.supp_id}} {{this.company_name}}</h3>
+  </div>
+</div>
+
+
+ <div class="row">
+  <div class="col">
+    <table class="table">
+      <thead>
+        <tr>
+            <th scope="col">Supplier ID</th>
+            <th scope="col">Company Name</th>
+            <th scope="col">Contact Person</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Address</th>
+            <th scope="col">Date</th>
+            <th scope="col">Status</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">{{this.supp_id}}</th>
+          <td>{{this.company_name}}</td>
+          <td>{{this.contact_person}}</td>
+          <td>{{this.phone}}</td>
+          <td>{{this.address}}</td>
+          <td>{{this.date}}</td>
+          <td>{{this.status}}</td>
+          
+          
+        </tr>
+      </tbody>
+    </table>
+  </div>
+ </div>
+  <div class="row">
+  <div class="col">
+    <b>Remarks</b>
+    </div>
+  </div>
+<div class="row">
+  <div class="col">
+    {{this.remarks}}
+    </div>
+  </div>
+
+{{/each}}
+
+</div>

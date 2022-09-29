@@ -1,0 +1,71 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/SupplierPage">Back</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Edit Item</li>
+  </ol>
+</nav>
+
+{{#if alert}}
+<div class="alert alert-success alert-dismissible fade show" role="alert" ng-show="show_alert">
+  {{alert}}   
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+</div>
+
+{{/if}}
+
+{{#each rows}}
+<form class="row g-3 needs-validation" method="POST" action="/EditSupplier/{{this.supp_id}}" novalidate>
+
+  <div class="col-6">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.company_name}}" placeholder="Company Name" name="company_name">
+            <label for="floatingInput">Company Name</label>
+        </div>
+    </div>
+
+
+  <div class="col-6">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.contact_person}}" placeholder="Contact Person" name="contact_person">
+            <label for="floatingInput">Contact Person</label>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.phone}}" placeholder="Phone" name="phone">
+            <label for="floatingInput">Phone</label>
+        </div>
+    </div>
+        <div class="col-6">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.address}}" placeholder="Address" name="address">
+            <label for="floatingInput">Address</label>
+        </div>
+    </div>
+
+  <div class="col-12">
+        <div class="form-floating mb-3">
+            <textarea class="form-control" name="remarks" placeholder= "Description of the Product" id="remarks" style="height:200px">
+                {{this.remarks}}
+            </textarea>
+            <label for="description">Remarks</label>
+        </div>
+    </div>
+<div class="col-6">
+    <div class="form-floating">
+      <select class="form-select" id="floatingSelectGrid" value="{{this.status}}" name="status">
+        <option selected>Status</option>
+        <option value="active">active</option>
+        <option value="inactive">inactive</option>
+
+      </select>
+    </div>
+  </div>
+
+  
+    <div class="col-12 d-grid">
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </div>
+{{/each}}
+</form>

@@ -1,0 +1,90 @@
+<nav aria-label="breadcrumb">
+</nav>
+<div class="row">
+  <div class="bg-secondary p-2 text-dark bg-opacity-10 border border-2 rounded"> 
+ {{#each reference_num}}    
+  <div class="fs-6">Reference# {{this.stockin_trans_id}}</div>
+  <div class="fs-6">Company Name: {{this.company_name}}</div>
+{{/each}}
+</div> 
+</div> 
+
+
+{{#if alert2}}
+<div class="alert alert-success alert-dismissible fade show" role="alert" ng-show="show_alert">
+  {{alert2}}   
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+</div>
+
+{{/if}}
+<p></p>
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="#">Stock Entry</a>
+    
+  </li>
+  <li class="nav-item">
+     <a class="nav-link" href="/StockInEntry">Product List</a>
+  </li>
+
+</ul>
+
+<div class="view-user p-5">
+{{#each rows}}
+  <form class="row g-3 needs-validation" method="POST" action="/StockinEntryCart" novalidate>
+<div class="row mb-5">
+  <div class="col text-center">
+    <h3>{{this.item_name}} {{this.item_category}}</h3>
+  </div>
+ <div class="row">
+  <div class="col">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Item ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Brand</th>
+          <th scope="col">Category</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Cost</th>
+          <th scope="col">Stock</th>
+
+          
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">{{this.item_id}}</th>
+          <td>{{this.item_name}}</td>
+          <td>{{this.brand_name}}</td>
+          <td>{{this.category_name}}</td>
+          <td>{{this.quantity}}</td>
+          <td>{{this.price}}</td>
+          <td>{{this.stock}}</td>
+
+          <td class="text-end">
+          <a  href="/StockinEntryCart/{{this.item_id}}" class="btn btn-secondary btn small"><i class="bi bi-plus-lg"></i> Add Stock</a>
+          <a href="/StockinEntryCart/delete/{{this.item_id}}"  type="button"  class="btn btn-danger btn small" id = "dbtn"><i class="bi bi-trash-fill"></i>Delete</a>
+          </td>
+         
+        </tr>
+      </tbody>
+    </table>
+  </div>
+ </div>
+
+{{/each}}
+
+   <div class="d-grid gap-2">
+      <button class="btn btn-primary" type="submit" >Submit</button>
+      </div> 
+ 
+     
+
+</form>
+
+
+
+
+</div>

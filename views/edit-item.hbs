@@ -1,0 +1,49 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/invitem">Back</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Edit Item</li>
+  </ol>
+</nav>
+
+{{#if alert}}
+<div class="alert alert-success alert-dismissible fade show" role="alert" ng-show="show_alert">
+  {{alert}}   
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+</div>
+
+{{/if}}
+
+{{#each rows}}
+<form class="row g-3 needs-validation" method="POST" action="/edititem/{{this.item_id}}" novalidate>
+<div class="bg-secondary p-2 text-dark bg-opacity-10 border border-2 rounded"> 
+  <div class="col-12">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.item_name}}" placeholder="Item Name" name="item_name">
+            <label for="floatingInput">Item Name</label>
+        </div>
+    </div>
+
+     <div class="col-6">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.price}}" placeholder="Price" name="price">
+            <label for="floatingInput">Cost per Item</label>
+        </div>
+    </div>
+     
+
+ <div class="col-12">
+        <div class="form-floating mb-3">
+            <textarea class="form-control" name="description" placeholder= "Description of the Product" id="description" style="height:200px">
+                {{this.desc}}
+            </textarea>
+            <label for="description">Description</label>
+        </div>
+    </div>
+
+ </div> 
+    <div class="col-12 d-grid">
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </div>
+{{/each}}
+</form>

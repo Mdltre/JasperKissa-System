@@ -1,0 +1,99 @@
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/StockinCartPage">Back</a></li>
+    <li class="breadcrumb-item active" aria-current="page">View Item</li>
+  </ol>
+</nav>  
+<div class="view-user p-5">
+
+{{#if alert2}}
+<div class="alert alert-success alert-dismissible fade show" role="alert" ng-show="show_alert">
+  {{alert2}}   
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+</div>
+
+{{/if}}
+
+{{#each rows}}
+  <form class="row g-3 needs-validation" method="POST" action="/StockinCartPage/{{this.item_id}}" novalidate>
+<div class="row mb-5">
+  <div class="col text-center">
+    <h3>{{this.item_name}} {{this.item_category}}</h3>
+  </div>
+</div>
+
+
+ <div class="row">
+  <div class="col">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Item ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Category</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Cost</th>
+          <th scope="col">Stock</th>
+          <th scope="col" ></th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">{{this.item_id}}</th>
+          <td>{{this.item_name}}</td>
+          <td>{{this.category}}</td>
+          <td>{{this.quantity}}</td>
+          <td>{{this.price}}</td>
+          <td>{{this.stock}}</td>
+          <td>
+         
+               <div class="d-flex justify-content-start">
+                <div class="p-2">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingInput" placeholder="Stock" name="stock">
+                        <label for="floatingInput">Add Stock</label>
+                        </div>
+                </div>
+            </div>
+            
+       
+
+            </td>
+          <td class="text-end">
+          <a href="/StockinCartPage/delete/{{this.item_id}}"  type="button"  class="btn btn-danger btn small" id = "dbtn"><i class="bi bi-trash-fill"></i>Delete</a>
+          </td>
+         
+        </tr>
+      </tbody>
+    </table>
+  </div>
+ </div>
+
+<div class="row">
+  <div class="col">
+    <b>Description</b>
+    </div>
+  </div>
+<div class="row">
+  <div class="col">
+    {{this.description}}
+    </div>
+  </div>
+
+{{/each}}
+
+
+  {{#each rows}}
+   <div class="d-grid gap-2">
+      <button class="btn btn-primary" type="submit" >Add</button>
+      </div> 
+      {{/each}}
+     
+
+</form>
+
+
+</div>

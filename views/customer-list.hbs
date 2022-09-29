@@ -1,0 +1,36 @@
+<div class="row">
+  {{!<div class="col-6"><h1>Users</h1></div>}}
+  <div class="d-flex justify-content-end">
+    <a href="/addcust" type="button" class="btn btn-primary align-self-center">Add New Customer</a>
+
+  </div>
+</div>
+
+
+<table class="table table-bordered table-hover">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Fist Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">Phone Number</th>
+      <th scope="col" class="text-end">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each rows}}
+    <tr>
+      <th scope="row">{{this.cust_id}}</th>
+      <td>{{this.cust_first_name}}</td>
+      <td>{{this.cust_last_name}}</td>
+      <td>{{this.phone_num}}</td>
+      <td class="text-end">
+        <a href="/viewcust/{{this.cust_id}}" type="button" class="btn btn-light btn small"><i class="bi bi-eye"></i>View</a>
+        <a href="/editcust/{{this.cust_id}}" type="button" class="btn btn-light btn small"><i class="bi bi-pencil"></i>Edit</a>
+
+      </td>
+    </tr>
+  {{/each}}
+
+  </tbody>
+</table> 
