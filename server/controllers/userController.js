@@ -59,7 +59,7 @@ exports.invitems = (req,res) => {
         if(err) throw err; //not connected!
         console.log('Connected as ID' + " " + connection.threadId)
         //User the connection
-        connection.query('SELECT item_id, item_name,item.category_id,item.brand_id,category_name,brand_name,description,quantity,final_price,stock,supp_id, DATE_FORMAT(datein,"%m-%d-%Y") as datein FROM item,category,brand WHERE category.category_id = item.category_id AND brand.brand_id = item.brand_id GROUP BY item_id',(err,rows) => {
+        connection.query('SELECT item_id, item_name,item.category_id,item.brand_id,category_name,brand_name,item.description,quantity,final_price,stock,supp_id, DATE_FORMAT(datein,"%m-%d-%Y") as datein FROM item,category,brand WHERE category.category_id = item.category_id AND brand.brand_id = item.brand_id GROUP BY item_id',(err,rows) => {
             // When done with the connection, release it
             connection.release();
             if(!err){
@@ -768,13 +768,13 @@ exports.editbrand = (req,res) => {
 //Update Customer
 exports.updatebrand = (req,res) => {
 
-    const{brand_name} = req.body;
+    const{brand_name,description} = req.body;
     
     pool.getConnection((err,connection) => {
         if(err) throw err; //not connected!
         console.log('Connected as ID' + " " + connection.threadId)
         //User the connection
-        connection.query('UPDATE brand SET brand_name = ? WHERE brand_id = ? ',[brand_name, req.params.id],(err,rows) => {
+        connection.query('UPDATE brand SET brand_name = ?, brand_desc = ? WHERE brand_id = ? ',[brand_name,description, req.params.id],(err,rows) => {
             // When done with the connection, release it
             connection.release();
     
@@ -817,7 +817,7 @@ exports.get_brand = (req,res) => {
 
     //Add new category by search
     exports.create_brand = (req,res) => {
-      const{ brand_name } = req.body;
+      const{ brand_name,description } = req.body;
 
         pool.getConnection((err,connection) => {
             if(err) throw err; //not connected!
@@ -826,7 +826,7 @@ exports.get_brand = (req,res) => {
             let searchTerm = req.body.search;
         
             //User the connection
-            connection.query('INSERT INTO brand SET brand_name = ?', [brand_name],(err,rows) => {
+            connection.query('INSERT INTO brand SET brand_name = ?,brand_desc = ?', [brand_name,description],(err,rows) => {
                 // When done with the connection, release it
                 connection.release();
         
@@ -2112,34 +2112,95 @@ exports.create_Supplier = (req,res) => {
     
 
 }
-//Add stock to history
-/*exports.create = (req,res) => {
-    const {item_code,item_name, category, description, quantity, supplier, price, stock,datein,markup,employee,invoice } = req.body;
-      pool.getConnection((err,connection) => {
-          if(err) throw err; //not connected!
-          console.log('Connected as ID' + " " + connection.threadId)
-      
-          let searchTerm = req.body.search;
-      
-          //User the connection
-          connection.query('INSERT INTO item SET item_code = ?,item_name = ?, category = ?, description = ?, quantity = ?, price = ?, stock = ?, datein = ?,  markup = ?, employee = ?, invoice = ?, supplier = ?', [item_code,item_name,category,description,quantity,price,stock,datein,markup,employee,invoice,supplier],(err,rows) => {
-              // When done with the connection, release it
-              connection.release();
-      
-              if(!err){
-                  res.render('add-item',{alert: 'Item added successfully.'});
-              } else{
-                  console.log(err);
-              }
-      
-              console.log('The data from user table: \n', rows);
-      
-      
-          });
-      });
-      
-  
-  }*/
+
+//Stock Return Page
+exports.StockReturnPage = (req,res) => {
+
+    //Connect to DB
+    pool.getConnection((err,connection) => {
+        if(err) throw err; //not connected!
+        console.log('Connected as ID' + " " + connection.threadId)
+        //User the connection
+
+    
+        connection.query('SELECT SE.item_id,reff_num, item_name,brand_name,category_name,company_name,price,final_price,new_stock_added,emp_firstname,DATE_FORMAT(ST.date_added,"%m/%d/%Y") as datein, TIME_FORMAT(ST.date_added, "%I:%i:%s %p") as timein FROM stockin_transaction AS ST, stock_entry AS SE, item AS I,supplier AS S, brand AS B, category AS C, employee AS E WHERE stockin_trans_id = reff_num AND SE.item_id = I.item_id AND ST.supplier = S.supp_id AND I.brand_id = B.brand_id AND I.category_id = C.Category_id AND ST.encoded_by = E.emp_id ORDER BY ST.date_added',[],(err,rows) => {
+
+            
+            // When done with the connection, release it
+    
+            if(!err){
+                res.render('StockReturnPage', {rows});
+            } else{
+                console.log(err);
+            }
+    
+            console.log('The data from user table: \n', rows);
+
+
+        });
+    });  
+
+    };
+
+    exports.findstockreturn_history = (req,res) => {
+
+        pool.getConnection((err,connection) => {
+            if(err) throw err; //not connected!
+            console.log('Connected as ID' + " " + connection.threadId)
+        
+            let searchTerm = req.body.search;
+        
+            //User the connection
+            connection.query('SELECT SE.item_id,reff_num, item_name,brand_name,category_name,company_name,price,final_price,new_stock_added,emp_firstname,DATE_FORMAT(ST.date_added,"%m/%d/%Y") as datein, TIME_FORMAT(ST.date_added, "%I:%i:%s %p") as timein FROM stockin_transaction AS ST, stock_entry AS SE, item AS I,supplier AS S, brand AS B, category AS C, employee AS E WHERE stockin_trans_id = reff_num AND SE.item_id = I.item_id AND ST.supplier = S.supp_id AND I.brand_id = B.brand_id AND I.category_id = C.Category_id AND ST.encoded_by = E.emp_id AND (item_name LIKE ? OR reff_num LIKE ? OR SE.item_id LIKE ?) ORDER BY ST.date_added ', ['%' + searchTerm + '%','%' + searchTerm + '%','%' + searchTerm + '%'],(err,rows) => {
+                // When done with the connection, release it
+                connection.release();
+        
+                if(!err){
+                    res.render('StockReturnPage', {rows});
+                } else{
+                    console.log(err);
+                }
+        
+                console.log('The data from user table: \n', rows);
+        
+    
+            });
+        });
+        }
+    
+     exports.get_each_return = (req,res) => {
+           
+         res.render('view-return');
+        
+        }
+     exports.FindDate_returnpage = (req,res) => {
+
+            pool.getConnection((err,connection) => {
+                if(err) throw err; //not connected!
+                console.log('Connected as ID' + " " + connection.threadId)
+            
+                let From_searchTerm = req.body.From_SortDate;
+                let To_searchTerm = req.body.To_SortDate;
+            
+                //User the connection
+                connection.query('SELECT SE.item_id,reff_num, item_name,brand_name,category_name,company_name,price,final_price,new_stock_added,emp_firstname,DATE_FORMAT(ST.date_added,"%m/%d/%Y") as datein, TIME_FORMAT(ST.date_added, "%I:%i:%s %p") as timein FROM stockin_transaction AS ST, stock_entry AS SE, item AS I,supplier AS S, brand AS B, category AS C, employee AS E WHERE stockin_trans_id = reff_num AND SE.item_id = I.item_id AND ST.supplier = S.supp_id AND I.brand_id = B.brand_id AND I.category_id = C.Category_id AND ST.encoded_by = E.emp_id AND  CAST(ST.date_added AS DATE) between ? and ? ORDER BY ST.date_added ', [From_searchTerm,To_searchTerm],(err,rows) => {
+                    // When done with the connection, release it
+                    connection.release();
+            
+                    if(!err){
+                        res.render('StockReturnPage', {rows});
+                    } else{
+                        console.log(err);
+                    }
+            
+                    //console.log('The data from user table: \n', rows);
+                    console.log("YES"+From_searchTerm);
+                    console.log("YES"+To_searchTerm);
+        
+                });
+            });
+            }
+           
 
 /*//Router
 router.get('', (req,res) => {

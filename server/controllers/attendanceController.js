@@ -15,7 +15,7 @@ exports.AttendancePage = (req,res) => {
     console.log("Attendance database is connected.");
     const type = "";
 
-    connection.query('SELECT attendanceID, employeeID, attendance_type, DATE_FORMAT(attendance_dt,"%m-%d-%Y") as datein FROM attendance_records', (err, rows)=> {
+    connection.query('SELECT attendanceID, employeeID, attendance_type, DATE_FORMAT(attendance_dt,"%m-%d-%Y") as datein,TIME_FORMAT(attendance_dt, "%I:%i:%s %p") as timein FROM attendance_records', (err, rows)=> {
       connection.release();
 
       if(!err){

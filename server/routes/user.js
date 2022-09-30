@@ -74,6 +74,7 @@ router.post('/StockinEntryCart/:id', userController.create_stock_entry);
 router.get('/StockinHistoryPage', userController.StockinHistoryPage);
 router.post('/StockinHistoryPage', userController.findstock_history);
 
+
 //SORT
 /*router.post('/StockinHistoryPage/itemid', userController.sortStockinHistoryPage_itemid);
 router.post('/StockinHistoryPage/itemname', userController.sortStockinHistoryPage_itemname);
@@ -85,6 +86,12 @@ router.post('/StockinHistoryPage/FindDate', userController.FindDate);
 //router.get('/prodinvitem', userController.PInv);
 //router.get('/viewiteminInv/:id', userController.viewiteminv);
 //router.post('/prodinvitem', userController.findProdInv);
+
+//Stock Return
+router.get('/StockReturnPage', userController.StockReturnPage);
+router.post('/StockReturnPage', userController.findstockreturn_history);
+router.get('/StockReturnPage/:id/:id', userController.get_each_return);
+router.post('/StockReturnPage/FindDate', userController.FindDate_returnpage);
 
 
 //EMPLOYEE
