@@ -36,14 +36,27 @@ exports.TimeInOut = (req,res) => {
 pool.getConnection((err, connection) => {
   if (err) throw err;
   const{e_ID} = req.body;
+  var adminatt = false;
 
   if(e_ID){
     connection.connect(function(err) {
       console.log("Connected!");
+      var isadmin = "SELECT position FROM employee WHERE emp_id = '"+e_ID+"'"
+      connection.query(isadmin, function(err,result){
+        var emp_position = JSON.stringify(result);
+        var cond0 = '[{"position":Admin}]';
+        if (emp_position === cond0){
+          adminatt = true;
+          console.log("This is an admin.");
+        }else{
+          console.log("This is an employee.")
+        }
+      });
+
       var sql = "SELECT * FROM employee WHERE emp_id = '"+e_ID+"'" // setup your query
       connection.query(sql, function (err, result) {  // pass your query
         console.log("Result: " + result);
-        if (result != "") {
+        if (result != "" && adminatt == false) {
         // true logic
           var timeinout = "SELECT attendance_type FROM attendance_records WHERE employeeID = '"+e_ID+"' AND DATE(attendance_dt) = curdate() ORDER BY attendance_dt DESC LIMIT 1"
           connection.query(timeinout, function (err,result){
