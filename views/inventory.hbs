@@ -1,4 +1,4 @@
-<div class="p-2"><h2>Product Inventory</h2></div>
+<div class="p-2"><h2>Product List</h2></div>
  <div class="d-flex">     
     <div class="p-2">
      <form class="d-flex" role="sort" method="POST" action="/invitem" novalidate>
@@ -44,8 +44,7 @@
       <th scope="col">Item Category</th>
       <th scope="col">Brand</th>
       <th scope="col">Quantity</th>
-      <th scope="col">Price</th>
-      <th scope="col">Stock</th>
+      <th scope="col">Retail Price</th>
       <th scope="col">Date Added</th>
       <th scope="col" class="text-end">Action</th>
     </tr>
@@ -59,10 +58,9 @@
       <td>{{this.brand_name}}</td>
       <td>{{this.quantity}}</td>
       <td>{{this.final_price}}</td>
-      <td>{{this.stock}}</td>
       <td>{{this.datein}}</td>
       <td class="text-end">
-        <a href="/viewitem/{{this.item_id}}" type="button" class="btn btn-light btn small"><i class="bi bi-eye"></i>View</a>
+        <a href="/viewiteminInv/{{this.item_id}}" type="button" class="btn btn-light btn small"><i class="bi bi-eye"></i>View</a>
         <a href="/edititem/{{this.item_id}}" type="button" class="btn btn-light btn small"><i class="bi bi-pencil"></i>Edit</a>
     
       </td>

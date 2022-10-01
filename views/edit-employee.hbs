@@ -17,21 +17,31 @@
 {{#each rows}}
 <form class="row g-3 needs-validation" method="POST" action="/EditEmployee/{{this.emp_id}}" novalidate>
 
-  <div class="col-12">
+  <div class="col-5">
         <div class="form-floating mb-3">
             <input type="text" class="form-control" id="floatingInput" value="{{this.emp_firstname}}" placeholder="Employee First Name" name="emp_firstname">
             <label for="floatingInput">Firstname</label>
         </div>
     </div>
+    <div class="col-2">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.employeeSuffix}}" placeholder="Suffix" name="employeeSuffix">
+            <label for="floatingInput">Suffix</label>
+        </div>
+    </div>
 
-
-     <div class="col-6">
+     <div class="col-5">
         <div class="form-floating mb-3">
             <input type="text" class="form-control" id="floatingInput" value="{{this.emp_lastname}}" placeholder="Employee Lastname" name="emp_lastname">
             <label for="floatingInput">Lastname</label>
         </div>
     </div>
-
+ <div class="col-6">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.phone}}" placeholder="Phone" name="phone">
+            <label for="floatingInput">Phone</label>
+        </div>
+    </div>
     <div class="col-6">
     <div class="form-floating">
       <select class="form-select" id="floatingSelectGrid" value="{{this.position}}" name="position">
@@ -43,16 +53,16 @@
       </select>
     </div>
   </div>
-     <div class="col-6">
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="floatingInput" value="{{this.phone}}" placeholder="Phone" name="phone">
-            <label for="floatingInput">Phone</label>
-        </div>
-    </div>
     <div class="col-6">
         <div class="form-floating mb-3">
             <input type="text" class="form-control" id="floatingInput" value="{{this.address}}" placeholder="Address" name="address">
             <label for="floatingInput">Address</label>
+        </div>
+    </div>
+     <div class="col-6">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" value="{{this.emial}}" placeholder="Email" name="email">
+            <label for="floatingInput">Email</label>
         </div>
     </div>
      <div class="col-6">

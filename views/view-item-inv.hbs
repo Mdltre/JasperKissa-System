@@ -1,6 +1,6 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="/prodinvitem">Back</a></li>
+    <li class="breadcrumb-item"><a href="/invitem">Back</a></li>
     <li class="breadcrumb-item active" aria-current="page">View Item</li>
   </ol>
 </nav>
@@ -26,11 +26,9 @@
           <th scope="col">Brand</th>
           <th scope="col">Quantity</th>
           <th scope="col">Cost</th>
-          <th scope="col">Stock</th>
-          <th scope="col" >Price</th>
+          <th scope="col" >Retail Price</th>
           <th scope="col" >Encoded By</th>
-           <th scope="col">Supplier</th>
-           <th scope="col" >Date In</th>
+           <th scope="col" >Date Added</th>
           
         </tr>
       </thead>
@@ -38,14 +36,12 @@
         <tr>
           <th scope="row">{{this.item_id}}</th>
           <td>{{this.item_name}}</td>
-          <td>{{this.category}}</td>
+          <td>{{this.category_name}}</td>
           <td>{{this.brand_name}}</td>
           <td>{{this.quantity}}</td>
           <td>{{this.price}}</td>
-          <td>{{this.stock}}</td>
           <td>{{this.final_price}}</td>
-          <td>{{this.employee}}</td>
-          <td>{{this.supplier}}</td>
+          <td>{{this.emp_firstname}}</td>
           <td>{{this.datein}}</td>
           
         </tr>

@@ -34,11 +34,7 @@
       <th scope="col">Item Code</th>
       <th scope="col">Item Name</th>
       <th scope="col">Item Category</th>
-      <th scope="col">Quantity</th>
-      <th scope="col">Price</th>
       <th scope="col">Stock</th>
-      <th scope="col">Date</th>
-      <th scope="col">Supplier</th>
       <th scope="col" class="text-end">Action</th>
     </tr>
   </thead>
@@ -47,14 +43,10 @@
     <tr>
       <th scope="row">{{this.item_id}}</th>
       <td>{{this.item_name}}</td>
-      <td>{{this.category}}</td>
-      <td>{{this.quantity}}</td>
-      <td>{{this.price}}</td>
+      <td>{{this.category_name}}</td>
       <td>{{this.stock}}</td>
-      <td>{{this.datein}}</td>
-      <td>{{this.supplier}}</td>
       <td class="text-end">
-        <a href="/viewiteminInv/{{this.item_id}}" type="button" class="btn btn-light btn small"><i class="bi bi-eye"></i>View</a>
+        <a href="/viewitem/{{this.item_id}}" type="button" class="btn btn-light btn small"><i class="bi bi-eye"></i>View</a>
 
       </td>
     </tr>

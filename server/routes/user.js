@@ -82,10 +82,11 @@ router.post('/StockinHistoryPage/category', userController.sortStockinHistoryPag
 router.post('/StockinHistoryPage/supplier', userController.sortStockinHistoryPage_supplier);
 router.post('/StockinHistoryPage/date', userController.sortStockinHistoryPage_date);*/
 router.post('/StockinHistoryPage/FindDate', userController.FindDate);
+
 //INVENTORY
-//router.get('/prodinvitem', userController.PInv);
-//router.get('/viewiteminInv/:id', userController.viewiteminv);
-//router.post('/prodinvitem', userController.findProdInv);
+router.get('/prodinvitem', userController.PInv);
+router.get('/viewiteminInv/:id', userController.viewiteminv);
+router.post('/prodinvitem', userController.findProdInv);
 
 //Stock Return
 router.get('/StockReturnPage', userController.StockReturnPage);

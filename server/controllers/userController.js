@@ -1653,7 +1653,7 @@ exports.FindDate = (req,res) => {
    
 
 //INVENTORY
-/*
+
 //View Items in Inventory
 exports.PInv = (req,res) => {
 
@@ -1662,7 +1662,7 @@ exports.PInv = (req,res) => {
         if(err) throw err; //not connected!
         console.log('Connected as ID' + " " + connection.threadId)
         //User the connection
-        connection.query('SELECT item_id, item_name,category,description,quantity,price,stock,supplier,markup,employee, DATE_FORMAT(datein,"%m-%d-%Y") as datein FROM item ',(err,rows) => {
+        connection.query('SELECT item_id, item_name,i.category_id,i.brand_id,category_name,brand_name,i.description,quantity,price,final_price,stock,i.supp_id, DATE_FORMAT(datein,"%m-%d-%Y") as datein,emp_firstname FROM item AS i,category,brand,employee as e WHERE category.category_id = i.category_id AND brand.brand_id = i.brand_id AND e.emp_id = i.emp_id ',(err,rows) => {
             // When done with the connection, release it
             connection.release();
     
@@ -1686,7 +1686,7 @@ exports.viewiteminv = (req,res) => {
         if(err) throw err; //not connected!
         console.log('Connected as ID' + " " + connection.threadId)
         //User the connection
-        connection.query('SELECT item_id, item_name,category,description,quantity,price,stock,supplier,markup,employee, DATE_FORMAT(datein,"%m-%d-%Y") as datein FROM item WHERE item_id = ?', [req.params.id],(err,rows) => {
+        connection.query('SELECT item_id, item_name,i.category_id,i.brand_id,category_name,brand_name,i.description,quantity,price,final_price,stock,i.supp_id, DATE_FORMAT(datein,"%m-%d-%Y") as datein,emp_firstname FROM item AS i,category,brand,employee as e WHERE category.category_id = i.category_id AND brand.brand_id = i.brand_id AND e.emp_id = i.emp_id AND item_id = ?', [req.params.id],(err,rows) => {
             
             // When done with the connection, release it
             //SELECT item.item_id,item.item_name,item.category,item.description,item.quantity,item.price,item.stock,item.datein,item.markup,item.supplier,employee.emp_firstname FROM item,employee WHERE employee.emp_id = item.emp_id AND item.item_id = ?
@@ -1719,7 +1719,7 @@ exports.findProdInv = (req,res) => {
         let searchTerm = req.body.search;
     
         //User the connection
-        connection.query('SELECT item_id, item_name,category,description,quantity,price,stock,supplier,markup,employee, DATE_FORMAT(datein,"%m-%d-%Y") as datein FROM item WHERE item_name LIKE ? OR category LIKE ? OR supplier LIKE ? ', ['%' + searchTerm + '%','%' + searchTerm + '%' ,'%' + searchTerm + '%'],(err,rows) => {
+        connection.query('SELECT item_id, item_name,item.category_id,item.brand_id,category_name,brand_name,item.description,quantity,price,final_price,stock,supp_id, DATE_FORMAT(datein,"%m-%d-%Y") as datein FROM item,category,brand WHERE category.category_id = item.category_id AND brand.brand_id = item.brand_id AND (item_name LIKE ? OR category_name LIKE ?) ', ['%' + searchTerm + '%','%' + searchTerm + '%'],(err,rows) => {
             // When done with the connection, release it
             connection.release();
     
@@ -1734,7 +1734,7 @@ exports.findProdInv = (req,res) => {
     
         });
     });
-    }*/
+    }
 
 //////EMPLOYEE//////////////////////////////////
 
@@ -1847,14 +1847,14 @@ exports.EditEmployee = (req,res) => {
 //Update Employee
 exports.UpdateEmployee = (req,res) => {
 
-    const{emp_firstname,emp_lastname,phone,address,position,email,username,password,status,date} = req.body;
+    const{emp_firstname,employeeSuffix,emp_lastname,phone,address,position,email,username,password,status,date} = req.body;
    
    
     pool.getConnection((err,connection) => {
         if(err) throw err; //not connected!
         console.log('Connected as ID' + " " + connection.threadId)
         //User the connection
-        connection.query('UPDATE employee SET emp_firstname = ?, emp_lastname = ?, phone = ?, address = ?, position = ?, email = ?, username = ?, password = ?, status = ?, date = ? WHERE emp_id = ? ',[emp_firstname,emp_lastname,phone,address,position,email,username,password,status,date, req.params.id],(err,rows) => {
+        connection.query('UPDATE employee SET emp_firstname = ?,employeeSuffix = ?, emp_lastname = ?, phone = ?, address = ?, position = ?, email = ?, username = ?, password = ?, status = ?, date = ? WHERE emp_id = ? ',[emp_firstname,employeeSuffix,emp_lastname,phone,address,position,email,username,password,status,date, req.params.id],(err,rows) => {
             // When done with the connection, release it
             connection.release();
       
@@ -1897,7 +1897,7 @@ exports.get_employee = (req,res) => {
 
 
 exports.create_employee = (req,res) => {
-  const{emp_firstname, emp_lastname, phone, address,position,email,username,password,date} = req.body;
+  const{emp_firstname,employeeSuffix, emp_lastname, phone, address,position,email,username,password,date} = req.body;
 
     pool.getConnection((err,connection) => {
         if(err) throw err; //not connected!
@@ -1906,7 +1906,7 @@ exports.create_employee = (req,res) => {
         let searchTerm = req.body.search;
     
         //User the connection
-        connection.query('INSERT INTO employee SET emp_firstname = ?, emp_lastname = ? , phone = ?, address = ?, position = ?, email = ?, username = ?, password = ?, date = ?', [emp_firstname,emp_lastname,phone,address,position,email,username,password,date],(err,rows) => {
+        connection.query('INSERT INTO employee SET emp_firstname = ?,employeeSuffix = ?, emp_lastname = ? , phone = ?, address = ?, position = ?, email = ?, username = ?, password = ?', [emp_firstname,employeeSuffix,emp_lastname,phone,address,position,email,username,password],(err,rows) => {
             // When done with the connection, release it
             connection.release();
     
