@@ -1,3 +1,4 @@
+
 const express = require('express');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
@@ -57,6 +58,8 @@ pool.getConnection((err,connection) => {
 
 const routes = require('./server/routes/user');
 app.use('/', routes);
+const posroutes = require('./server/routes/PosSystem');
+app.use('/', posroutes);
 
 var sess;
 const employeeroutes = require('./server/routes/employee');

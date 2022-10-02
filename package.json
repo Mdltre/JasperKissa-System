@@ -18,8 +18,10 @@
     "express-session": "^1.17.3",
     "handlebars": "^4.7.7",
     "hbs": "^4.2.0",
+    "jquery": "^3.6.1",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
+    "php-server": "^1.0.0",
     "sequelize": "^6.21.4"
   },
   "devDependencies": {
