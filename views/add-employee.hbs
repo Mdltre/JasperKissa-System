@@ -17,14 +17,20 @@
 
 <form class="row g-3 needs-validation" method="POST" action="/AddEmployee" novalidate>
 
-   <div class="col-6">
+   <div class="col-5">
         <div class="form-floating mb-3">
             <input type="text" class="form-control" id="floatingInput" placeholder="First Name" name="emp_firstname">
             <label for="floatingInput">First Name</label>
         </div>
     </div>
+    <div class="col-2">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" placeholder="Suffix" name="employeeSuffix">
+            <label for="floatingInput">Suffix</label>
+        </div>
+    </div>
 
-    <div class="col-6">
+    <div class="col-5">
         <div class="form-floating mb-3">
             <input type="text" class="form-control" id="floatingInput" placeholder="Last Name" name="emp_lastname">
             <label for="floatingInput">Last Name</label>
@@ -70,12 +76,6 @@
         <div class="form-floating mb-3">
             <input type="text" class="form-control" id="floatingInput" value="{{this.password}}" placeholder="Password" name="password">
             <label for="floatingInput">Password</label>
-        </div>
-    </div>
-    <div class="col-6">
-        <div class="form-floating mb-3">
-            <input type="date" class="form-control" id="floatingInput" value="{{this.date}}" placeholder="date" name="date">
-            <label for="floatingInput">Date</label>
         </div>
     </div>
     <div class="col-12 d-grid">

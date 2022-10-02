@@ -1,0 +1,63 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/home">Back</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Add New Stock</li>
+  </ol>
+</nav>
+
+{{#if alert}}
+<div class="alert alert-success alert-dismissible fade show" role="alert" ng-show="show_alert">
+  {{alert}}   
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+</div>
+
+{{/if}}
+
+<form class="row g-3 needs-validation" method="POST" action="/OrderTransaction" novalidate>
+
+<div class="bg-secondary p-2 text-dark bg-opacity-10 border border-2 rounded"> 
+
+      <p></p>
+ <p>Transacton Date: {{this.date}}</p>
+ <button class="btn btn-primary" type="submit">New Transaction</button>
+ <a href="" type="button" class="btn btn-light btn small">Search Product</a>
+ <a href="" type="button" class="btn btn-light btn small">Settle Payment</a>
+ <a href="" type="button" class="btn btn-light btn small">Clear Cart</a>
+ <a href="" type="button" class="btn btn-light btn small">Cancel Transaction</a>
+
+<p></p>
+    <div class="col-6">
+    <div class="form-floating">
+      <select class="form-select" id="floatingSelectGrid" value="{{this.encoded_by}}" name="encoded_by" >
+        <option selected>Encoded By</option>
+            {{#each this.admin_list}}
+                 <option value="{{this.emp_id}}"> {{this.emp_firstname}}</option>
+            {{/each}}      
+             
+      </select>
+    </div>
+     </div>
+ <p></p>
+
+ <table class="table table-bordered table-hover">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Item Code</th>
+      <th scope="col">Item Name</th>
+      <th scope="col">Item Category</th>
+      <th scope="col">Price</th>
+      <th scope="col">Qty</th>
+      <th scope="col">Total</th>
+      <th scope="col" class="text-end">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+
+  </tbody>
+</table> 
+     
+</div>
+   
+
+    </form>
