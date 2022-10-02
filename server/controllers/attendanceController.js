@@ -44,7 +44,7 @@ pool.getConnection((err, connection) => {
       var isadmin = "SELECT position FROM employee WHERE emp_id = '"+e_ID+"'"
       connection.query(isadmin, function(err,result){
         var emp_position = JSON.stringify(result);
-        var cond0 = '[{"position":Admin}]';
+        var cond0 = '[{"position":"Admin"}]';
         if (emp_position === cond0){
           adminatt = true;
           console.log("This is an admin.");
@@ -62,8 +62,6 @@ pool.getConnection((err, connection) => {
           connection.query(timeinout, function (err,result){
             var db_attype = JSON.stringify(result);
             var cond = '[{"attendance_type":1}]';
-            console.log(db_attype);
-            console.log(cond);
             if (db_attype === cond){
               connection.query(
                 "INSERT INTO attendance_records SET employeeID = ?, attendance_type = '0', attendance_dt = NOW()",
@@ -104,7 +102,9 @@ pool.getConnection((err, connection) => {
         else
         {
         // false logic
-        res.render("attendancerecord", {alert: "This employee code does not exist!" });
+        if(adminatt == true){
+          res.render("attendancerecord", {alert: "Admins don't need to time in/out!"})
+        }else{res.render("attendancerecord", {alert: "This employee code does not exist!" });}
         }
       });
       });
