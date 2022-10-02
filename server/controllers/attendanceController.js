@@ -20,7 +20,7 @@ exports.AttendancePage = (req,res) => {
 
       if(!err){
         
-        res.render("attendancerecord", {rows,true: {login: true }});
+        res.render("attendancerecord");
        
       } else {
         console.log(err);
