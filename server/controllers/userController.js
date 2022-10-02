@@ -25,30 +25,6 @@ exports.home = (req,res) => {
     };
     
 
-//View Items POS
-exports.items = (req,res) => {
-
-//Connect to DB
-pool.getConnection((err,connection) => {
-    if(err) throw err; //not connected!
-    console.log('Connected as ID' + " " + connection.threadId)
-    //User the connection
-    connection.query('SELECT * FROM item',(err,rows) => {
-        // When done with the connection, release it
-        connection.release();
-
-        if(!err){
-            res.render('pos', {rows});
-        } else{
-            console.log(err);
-        }
-
-        console.log('The data from user table: \n', rows);
-
-
-    });
-});
-};
 
 /////Product Inventory
 //View Items Inventory
@@ -979,7 +955,7 @@ exports.get_stockin_transaction = (req,res) => {
                 });
         
          }; 
-         exports.find_StockInEntry = (req,res) => {
+exports.find_StockInEntry = (req,res) => {
 
             pool.getConnection((err,connection) => {
                 if(err) throw err; //not connected!
